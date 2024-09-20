@@ -1,18 +1,19 @@
 import './App.css';
-import { Outlet } from 'react-router-dom';
-import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-
+import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 
-// Creating an httpLink for GraphQL endpoint
 const httpLink = createHttpLink({
   uri: '/graphql',
 });
 
-// Set up authentication headers with setContext
+// Construct request middleware that will attach the JWT token to every request as an `authorization` header
 const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
   const token = localStorage.getItem('id_token');
+
+  // return the headers to the context so httpLink can read them
   return {
     headers: {
       ...headers,
@@ -21,7 +22,7 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Creating Apollo Client with authLink and httpLink
+// Set up client to execute authLink middleware prior to graphQL API requests
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
