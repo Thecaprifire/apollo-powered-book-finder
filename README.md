@@ -73,9 +73,13 @@ THEN I am logged out of the site and presented with a menu with the options Sear
         `git clone https://github.com/Thecaprifire/apollo-powered-book-finder`
     -   Navigate into the project directory:
         `cd apollo-powered-book-finder`
-2. Open Integrated Terminal:
+2.	Set Up Environment Variables:
+	-	Create a .env file in the root directory of the project.
+	-	Add your MongoDB connection string from your MongoDB Atlas account to the .env file, following this format:
+        `MONGODB_URI=your_mongodb_connection_string_here`
+3. Open Integrated Terminal:
     -   Launch an integrated terminal from your preferred code editor (e.g., VSCode).
-3. Install Dependencies:
+4. Install Dependencies:
     -   Install the essential packages to initialize the application by running:
         `npm install`
     -   The key packages used include:
@@ -87,38 +91,45 @@ THEN I am logged out of the site and presented with a menu with the options Sear
             -   GraphQL: [Version 16.9.0](https://www.npmjs.com/package/graphql)
 	        -   Bootstrap: [Version 5.2.3](https://www.npmjs.com/package/bootstrap)
 	        -   jwt-decode: [Version 3.1.2](https://www.npmjs.com/package/jwt-decode)
+        - Server Dependencies:
+	        -	@apollo/server: [Version 4.11.0](https://www.npmjs.com/package/@apollo/server)
+	        -	Bcrypt: [Version 4.0.1](https://www.npmjs.com/package/bcrypt)
+	        -	Express: [Version 4.17.1](https://www.npmjs.com/package/express)
+	        -	GraphQL: [Version 16.9.0](https://www.npmjs.com/package/graphql)
+	        -	Jsonwebtoken: [Version 8.5.1](https://www.npmjs.com/package/jsonwebtoken)
+	        -	Mongoose: [Version 8.0.0](https://www.npmjs.com/package/mongoose)
         - Development Dependencies:
             -   Vite: [Version 5.1.6](https://www.npmjs.com/package/vite)
             -   ESLint: [Version 8.38.0](https://www.npmjs.com/package/eslint)
 		    -   Nodemon: [Version 2.0.3](https://www.npmjs.com/package/nodemon)
-		    -   Other ESLint plugins and types for React.
-4. Build the Application:
+		    -   Concurrently: [Version 8.2.0](https://www.npmjs.com/package/concurrently)
+5. Build the Application:
     -   Generate the production build by running:
           `npm run build`
-5. Preview the Application:
+6. Preview the Application:
     -   Preview the production build to ensure everything is working correctly:
            `npm run preview`
-6. Start the Development Server:
+7. Start the Development Server:
     -   Launch both the server and the client in development mode by running:
             `npm run develop`
-7. Test the Application:
+8. Test the Application:
     -   Open your browser and navigate to http://localhost:3000 (or the port specified by Vite) to test and view the application.
     -   Ensure both the server and client are running for the application to function correctly.
 
 
 ## Actual Website Link:
-[Apollo-Powered Book Finder](https://janiandaluz-portfolio.netlify.app)
+[Apollo-Powered Book Finder](https://apollo-powered-book-finder.onrender.com)
 
 
 ## Screenshots:
 ### Figure 1.
-![](./src/assets/images/screenshot1.png) 
+![](./client/src/assets/images/screenshot1.png) 
 ### Figure 2.
-![](./src/assets/images/screenshot2.png) 
+![](./client/src/assets/images/screenshot2.png) 
 ### Figure 3.
-![](./src/assets/images/screenshot3.png) 
+![](./client/src/assets/images/screenshot3.png) 
 ### Figure 4.
-![](./src/assets/images/screenshot4.png) 
+![](./client/src/assets/images/screenshot4.png) 
 
 
 ## Resources
@@ -130,11 +141,18 @@ THEN I am logged out of the site and presented with a menu with the options Sear
     -   GraphQL: [Version 16.9.0](https://www.npmjs.com/package/graphql)
 	-   Bootstrap: [Version 5.2.3](https://www.npmjs.com/package/bootstrap)
 	-   jwt-decode: [Version 3.1.2](https://www.npmjs.com/package/jwt-decode)
+- Server Dependencies:
+	-	@apollo/server: [Version 4.11.0](https://www.npmjs.com/package/@apollo/server)
+	-	Bcrypt: [Version 4.0.1](https://www.npmjs.com/package/bcrypt)
+	-	Express: [Version 4.17.1](https://www.npmjs.com/package/express)
+	-	GraphQL: [Version 16.9.0](https://www.npmjs.com/package/graphql)
+	-	Jsonwebtoken: [Version 8.5.1](https://www.npmjs.com/package/jsonwebtoken)
+	-	Mongoose: [Version 8.0.0](https://www.npmjs.com/package/mongoose)
 - Development Dependencies:
     -   Vite: [Version 5.1.6](https://www.npmjs.com/package/vite)
     -   ESLint: [Version 8.38.0](https://www.npmjs.com/package/eslint)
 	-   Nodemon: [Version 2.0.3](https://www.npmjs.com/package/nodemon)
-	-   Other ESLint plugins and types for React.
+	-   Concurrently: [Version 8.2.0](https://www.npmjs.com/package/concurrently)
 
 
  ## Questions
