@@ -1,30 +1,25 @@
 import { useState, useEffect } from 'react';
-import {
-  Container,
-  Col,
-  Form,
-  Button,
-  Card,
-  Row
-} from 'react-bootstrap';
-
+import { Container, Col, Form, Button, Card, Row } from 'react-bootstrap';
+// Import mutation hook from apolloClient
 import { useMutation } from '@apollo/client';
 import { SAVE_BOOK } from '../utils/mutations';
 import Auth from '../utils/auth';
-import { searchGoogleBooks } from '../utils/API';
 import { saveBookIds, getSavedBookIds } from '../utils/localStorage';
 
 const SearchBooks = () => {
   // create state for holding returned google api data
   const [searchedBooks, setSearchedBooks] = useState([]);
+
   // create state for holding our search field data
   const [searchInput, setSearchInput] = useState('');
 
   // create state to hold saved bookId values
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
-  // Initialize the SAVE_BOOK mutation
-  const [saveBook, { error }] = useMutation(SAVE_BOOK);
+  // Set up save_book mutation
+  const [ saveBook ] = useMutation(SAVE_BOOK);
+
+
 
   // set up useEffect hook to save `savedBookIds` list to localStorage on component unmount
   // learn more here: https://reactjs.org/docs/hooks-effect.html#effects-with-cleanup
@@ -40,58 +35,54 @@ const SearchBooks = () => {
       return false;
     }
 
-    try {
-      const response = await searchGoogleBooks(searchInput);
-
+    try { // Pass searchInput state variable into fetch request
+      const response = await fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchInput}`);
       if (!response.ok) {
-        throw new Error('something went wrong!');
+        throw new Error('Error fetching book data');
       }
 
-      const { items } = await response.json();
-
-      const bookData = items.map((book) => ({
-        bookId: book.id,
-        authors: book.volumeInfo.authors || ['No author to display'],
-        title: book.volumeInfo.title,
-        description: book.volumeInfo.description,
-        image: book.volumeInfo.imageLinks?.thumbnail || '',
+      const data = await response.json();
+      // Map out items from response
+      const bookData =  data.items.map(item => ({
+          authors: item.volumeInfo.authors || [],
+          bookId: item.id,
+          image: item.volumeInfo.imageLinks ? item.volumeInfo.imageLinks.thumbnail : '',
+          link: item.volumeInfo.title,
+          title: item.volumeInfo.title,
+          description: item.volumeInfo.description || '',
+                
       }));
+    
+      // Set mapped out data to state variable 
+    setSearchedBooks(bookData);
+    // Clear input field
+    setSearchInput('');
 
-      setSearchedBooks(bookData);
-      setSearchInput('');
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error(error);
     }
   };
 
   // create function to handle saving a book to our database
   const handleSaveBook = async (bookId) => {
-    // find the book in `searchedBooks` state by the matching id
+    // // find the book in `searchedBooks` state by the matching id
     const bookToSave = searchedBooks.find((book) => book.bookId === bookId);
-
+    
+    if (!bookToSave) return;
     // get token
     const token = Auth.loggedIn() ? Auth.getToken() : null;
 
-    if (!token) {
-      return false;
-    }
-
-    // Execute the SAVE_BOOK mutation & pass the book data as input
+    if (!token) return false;
+    
     try {
-      const { data } = await saveBook({
-        variables: { bookData: bookToSave}
+      // eslint-disable-next-line no-unused-vars
+      const { data } = await saveBook({ variables: { book: { ...bookToSave } },
       });
-      console.log(data);
       
-      if (error) {
-        throw new Error('something went wrong!');
-      }
-
-      // if book successfully saves to user's account, save book id to state
-      setSavedBookIds([...savedBookIds, bookToSave.bookId]);
-    } catch (err) {
-      console.error(err);
+    } catch (error) {
+      console.error('Error saving book', error);
     }
+    setSavedBookIds([...savedBookIds, bookToSave.bookId]);
   };
 
   return (
